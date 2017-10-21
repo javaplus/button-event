@@ -16,11 +16,11 @@ while True:
 
 
 
-def broadcastEvent(event):
+def broadcastEvent(eventName):
     mqttc = mqtt.Client("buttonMachine")
     #mqttc.connect("10.0.0.1", 1883)
     mqttc.connect("localhost", 1883)
     # don't retain messages, this needs to be more real -time
-    mqttc.publish("events/button", payload=event,qos=0,retain=False) 
+    mqttc.publish("events/button", payload=str(eventName),qos=0,retain=False) 
     mqttc.loop(2) #timeout = 2s
 
