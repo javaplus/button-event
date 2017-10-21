@@ -5,6 +5,15 @@ import paho.mqtt.client as mqtt
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+def broadcastEvent(eventName):
+    mqttc = mqtt.Client("buttonMachine")
+    #mqttc.connect("10.0.0.1", 1883)
+    mqttc.connect("localhost", 1883)
+    # don't retain messages, this needs to be more real -time
+    mqttc.publish("events/button", payload=str(eventName),qos=0,retain=False) 
+    mqttc.loop(2) #timeout = 2s
+
+
 while True:
         input_state = GPIO.input(18)
         if input_state == False:
@@ -16,11 +25,4 @@ while True:
 
 
 
-def broadcastEvent(eventName):
-    mqttc = mqtt.Client("buttonMachine")
-    #mqttc.connect("10.0.0.1", 1883)
-    mqttc.connect("localhost", 1883)
-    # don't retain messages, this needs to be more real -time
-    mqttc.publish("events/button", payload=str(eventName),qos=0,retain=False) 
-    mqttc.loop(2) #timeout = 2s
 
